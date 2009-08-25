@@ -1,4 +1,4 @@
 # Reticulatorjs
 
-wadus :)
 
+Work in progress, just wait a few days :)
