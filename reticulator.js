@@ -47,6 +47,8 @@ Object.prototype.merge = function (ob) {
 var ReticulatorId = "ReticulatorCont" + String((new Date()).getTime()).replace(/\D/gi, '');
 
 
+
+
 /**
 * Are you explorer?
 * @constructor
@@ -129,6 +131,7 @@ var VerticalGuide = function (options) {
   guide.style.borderLeft =  "1px solid " + this.options.color;
   guide.style.opacity =     this.options.opacity;
   guide.style.filter =      "alpha(opacity=" + this.options.opacity * 100 + ")";
+  guide.className =         ReticulatorId;
 
   return guide;
 };
@@ -141,7 +144,7 @@ var VerticalGuide = function (options) {
 var addVerticalGuide = function(options) {
 
   var guide = new VerticalGuide(options);
-  guide.style.left = String(options.left).indexOf("%") != -1 ? options.left : options.left + "px";
+  guide.style.left = String(options.left).indexOf("%") !== -1 ? options.left : options.left + "px";
   document.body.appendChild(guide);
   
   return guide;
@@ -173,6 +176,7 @@ var HorizontalGuide = function (options) {
   guide.style.borderTop =  "1px solid " + this.options.color;
   guide.style.opacity =     this.options.opacity;
   guide.style.filter =      "alpha(opacity=" + this.options.opacity * 100 + ")";
+  guide.className =         ReticulatorId;
 
   return guide;
 };
@@ -184,7 +188,7 @@ var HorizontalGuide = function (options) {
 var addHorizontalGuide = function(options) {
 
   var guide = new HorizontalGuide(options);
-  guide.style.top = String(options.top).indexOf("%") != -1 ? options.top : options.top + "px";
+  guide.style.top = String(options.top).indexOf("%") !== -1 ? options.top : options.top + "px";
   document.body.appendChild(guide);
   
   return guide;
@@ -218,6 +222,7 @@ var Reticulator = function (options) {
   window.onresize = function(){
     ResizeGuideContainer();
   };
+    
 };
 
 /**
@@ -266,7 +271,7 @@ Reticulator.prototype.addVerticalGuide = function (left) {
     opacity: this.options.opacity
   });
   
-  guide.style.left = String(left).indexOf("%") != -1 ? left : left + "px";
+  guide.style.left = String(left).indexOf("%") !== -1 ? left : left + "px";
   
   this.basegrid.layout.appendChild(guide);
   
@@ -285,7 +290,7 @@ Reticulator.prototype.addHorizontalGuide = function (top) {
   });
   
   guide.style.width = "100%"; // adjust the width to the grid
-  guide.style.top = String(top).indexOf("%") != -1 ? top : top + "px";
+  guide.style.top = String(top).indexOf("%") !== -1 ? top : top + "px";
 
   this.basegrid.layout.appendChild(guide);
   
@@ -298,7 +303,7 @@ Reticulator.prototype.addHorizontalGuide = function (top) {
 * 
 */
 Reticulator.prototype.buildGrid = function () {
-  var i, cumulative;
+  var i, cumulative, guide;
 
   // basegrid basic settings all together in this map
   this.basegrid = {
@@ -306,26 +311,56 @@ Reticulator.prototype.buildGrid = function () {
     guides: (this.options.gutter === 0 ? this.options.columns : this.options.columns * 2), // number of guides that we need to draw
     cols: this.options.columns === 0 ? 0 : ((this.options.width - ((this.options.columns - 1) * this.options.gutter)) / this.options.columns) // width for every column
   };
-    
+
   if (this.options.columns !== 0) {
     cumulative = 0;
-    
+
     // put your guide here 
     for (i = 0; i < this.basegrid.guides; i++) {
       // vertical guides here
-      var guide = new VerticalGuide({
+      guide = new VerticalGuide({
         color: this.options.color,
         opacity: this.options.opacity
       });
-      
+
       guide.style.left = cumulative + "px";
-      
+
       this.basegrid.layout.appendChild(guide);
-      
-      if(i%2 == 0) cumulative = cumulative + this.basegrid.cols;
-      else cumulative = cumulative + this.options.gutter;
-      
+
+      if(i%2 === 0) {
+        cumulative = cumulative + this.basegrid.cols;
+      } else {
+        cumulative = cumulative + this.options.gutter;
+      } 
     }
   }
 };
 
+
+/**
+* deactivate / activate by g + r key combination
+* 
+*/
+var reticulatorKey = {};
+document.onkeydown = function(e){
+  var key, keycode, guides, i;
+  if (!e) {
+    var e = window.event;
+  }
+  keycode = (IsExplorer() ? e.keyCode : e.which);
+  key = String.fromCharCode(e.keyCode);
+  if(reticulatorKey.key === null) {
+    reticulatorKey.key = key;
+  } else {
+    if(reticulatorKey.key === "G" && key === "R") {
+      guides = document.getElementsByClassName(ReticulatorId);
+      for (i = 0; i < guides.length; i++) {
+        guides[i].style.display = (guides[i].style.display === "none" ? "block" : "none");
+      }
+    }
+  }
+};
+
+document.onkeyup = function(e){
+  reticulatorKey.key = null;
+};
