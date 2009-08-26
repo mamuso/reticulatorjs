@@ -1,0 +1,86 @@
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: x-small;
+    font-variant: normal;
+    font-style: normal;
+    font-weight: normal;
+    line-height: 1.5em;
+    text-align: center;
+    background: #EFEFEF url('../images/bg.gif') center top;
+}
+*{
+    margin: 0;
+    padding: 0;
+}
+h2, h3, h4 {
+  font-weight:normal;
+  line-height:1.25em;
+  margin:0 0 0.5em;
+}
+h2 {
+  font-size: 2em;
+  color: #666666;
+  padding: 0.2em;
+  border-bottom: 1px solid #DC6228;
+}
+p {
+  font-size: 1.2em;
+  line-height: 1.4em;
+  padding: 0.5em 0;
+}
+.wrapper {
+  width: 951px;
+  margin: 0 auto;
+  text-align: left;
+  overflow: hidden;
+}
+
+#header {
+  padding: 4em;
+}
+#header h1 {
+  font-size: x-small;
+  float: left;
+}
+#header h1 a {
+  display: block;
+  width: 17.1em;
+  height: 4.7em;
+  background: url('../images/reticulator_logo.gif') no-repeat center center;
+}
+#header h1 a span {
+  display: none;
+}
+
+#content {
+  background: url('../images/bg_content.png') repeat-x top;
+}
+#content .wrapper {
+  background: #FFFFFF;
+}
+#content .maincolumn {
+  padding: 20px 0 20px 20px;
+  float: left;
+  width: 691px;
+}
+#content .sidebar {
+  padding: 1em;
+  float: left;
+  width: 220px;
+}
+
+.picture {
+  float: right;
+  margin: 0 0 1.5em 1.5em;
+  padding: 1em;
+  background: #E4E4E4;
+  width: 210px;
+}
+
+.picture span {
+  display: block;
+  font-size: 1.2em;
+  color: #888888;
+  font-style: italic;
+  font-family: times, serif;
+}

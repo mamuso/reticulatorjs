@@ -83,6 +83,7 @@ var BuildGuideContainer = function () {
     guideCont.style.position =  "absolute";
     guideCont.style.top =       0;
     guideCont.style.left =      0;
+    guideCont.style.zIndex =    9000000;
 
     // send this to the body
     document.body.appendChild(guideCont);        
@@ -116,7 +117,7 @@ var VerticalGuide = function (options) {
   // default guide options
   this.defaults = {
     color: "#00FF00",
-    opacity: 0.7
+    opacity: 0.5
   };
   // we can override the default options
   this.options = this.defaults.merge(options);
@@ -161,7 +162,7 @@ var HorizontalGuide = function (options) {
   // default guide options
   this.defaults = {
     color: "#00FF00",
-    opacity: 0.7
+    opacity: 0.5
   };
   // we can override the default options
   this.options = this.defaults.merge(options);
@@ -209,7 +210,7 @@ var Reticulator = function (options) {
     gutter: 9,
     align: "center",
     color: "#00FF00",
-    opacity: 0.7
+    opacity: 0.5
   };
   // overriding the default options
   this.options = this.defaults.merge(options);
@@ -341,9 +342,11 @@ Reticulator.prototype.buildGrid = function () {
 * hide/show by g + r key combination
 * 
 */
-var reticulatorKey = {};
+var reticulatorKey = {
+  key: null
+};
 document.onkeydown = function(e){
-  var key, keycode, guides, i;
+  var key, keycode, guides, i, a;
   if (!e) {
     var e = window.event;
   }
@@ -353,7 +356,16 @@ document.onkeydown = function(e){
     reticulatorKey.key = key;
   } else {
     if(reticulatorKey.key === "G" && key === "R") {
-      guides = document.getElementsByClassName(ReticulatorId);
+      if(document.getElementsByClassName) {
+        guides = document.getElementsByClassName(ReticulatorId);
+      } else {
+        i = 0;
+        a = document.getElementsByTagName("div");
+        guides = [];
+        while (element = a[i++]) {
+          if (element.className === ReticulatorId) { guides.push(element) }
+        }
+      }
       for (i = 0; i < guides.length; i++) {
         guides[i].style.display = (guides[i].style.display === "none" ? "block" : "none");
       }
