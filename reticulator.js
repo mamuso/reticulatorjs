@@ -25,12 +25,6 @@
 */
 
 /**
-* @returns an unique identificator for the guide container 
-* 
-*/
-var ReticulatorId = "ReticulatorCont" + String((new Date()).getTime()).replace(/\D/gi, '');
-
-/**
 * merge objects prototype
 *
 */
@@ -47,7 +41,14 @@ Object.prototype.merge = function (ob) {
 };
 
 /**
-* Are we in explorer?
+* @returns an unique identificator for the guide container 
+* 
+*/
+var ReticulatorId = "ReticulatorCont" + String((new Date()).getTime()).replace(/\D/gi, '');
+
+
+/**
+* Are you explorer?
 * @constructor
 * 
 */
@@ -55,9 +56,13 @@ var IsExplorer = function () {
   return (navigator.userAgent.indexOf('MSIE') !== -1);
 };
 
+
+
+
+
+
 /**
 * Building an standard container (once) for all the grids and guides.
-* @constructor
 * 
 */
 var BuildGuideContainer = function () {
@@ -67,11 +72,13 @@ var BuildGuideContainer = function () {
   if (guideCont === null) {
     guideCont = document.createElement("div");
     guideCont.id =              ReticulatorId;
-
+    
     // style it now
     guideCont.style.height =    "1px";
-    guideCont.style.width =     (new IsExplorer() ? document.body.offsetWidth : window.innerWidth) + "px";
-    guideCont.style.position =  (new IsExplorer() ? "absolute" : "fixed");
+    guideCont.style.width =     document.documentElement.clientWidth + "px";
+    guideCont.style.padding =   "0 0 0 0";
+    guideCont.style.margin =    "0 0 0 0";
+    guideCont.style.position =  "absolute";
     guideCont.style.top =       0;
     guideCont.style.left =      0;
 
@@ -82,17 +89,53 @@ var BuildGuideContainer = function () {
   return guideCont;
 };
 
+
+/**
+* Resize the guide container everytime that the window is resized.
+* 
+*/
+var ResizeGuideContainer = function () {
+  var guideCont = BuildGuideContainer();
+  guideCont.style.width = document.documentElement.clientWidth + "px";
+  return guideCont;
+};
+
+
+
+
+
 /**
 * VerticalGuide.
 * @constructor
 * 
 */
 var VerticalGuide = function (options) {
+  var guide;
+  
   // default guide options
   this.defaults = {
+    color: "#00FF00",
+    opacity: 0.7
   };
   // we can override the default options
-  this.options = this.defaults.merge(options);    
+  this.options = this.defaults.merge(options);
+  
+  guide = document.createElement("div");
+
+  // style it now
+  guide.style.position =    "absolute";
+  guide.style.height =      document.documentElement.clientHeight + "px";
+  guide.style.width =       "1px";
+  guide.style.borderLeft =  "1px solid red"
+  
+  // $(gridGuide).css({
+  //     position: "absolute",
+  //     height: $(document).height() + "px",
+  //     borderLeft: "1px solid " + options.guideColor,
+  //     left: cummulativecount + "px"
+  // });
+  
+  return guide
 };
 
 
@@ -104,10 +147,17 @@ var VerticalGuide = function (options) {
 var HorizontalGuide = function (options) {
   // default guide options
   this.defaults = {
+    color: "#00FF00",
+    opacity: 0.7
   };
   // we can override the default options
   this.options = this.defaults.merge(options);    
 };
+
+
+
+
+
 
 /**
 * Reticulator is an abstract base that contains the basics of the grid.
@@ -127,8 +177,16 @@ var Reticulator = function (options) {
   // overriding the default options
   this.options = this.defaults.merge(options);
 
+  alert(document.documentElement.clientHeight + "px")
+
   // here we go!
   this.buildGrid();
+  
+  
+  // onresize behavior
+  window.onresize = function(){
+    ResizeGuideContainer();
+  }
 };
 
 /**
@@ -157,10 +215,13 @@ Reticulator.prototype.buildGridLayout = function () {
   gridLayout.style.width =     this.options.width + "px";
   gridLayout.style.position =  "relative";
   gridLayout.style.margin =     margins;
-  
-  // to the container
+  gridLayout.style.padding =    "0 0 0 0";
+  gridLayout.style.textAlign =  "left";
+    
+  // send this to the container
   BuildGuideContainer().appendChild(gridLayout);        
   
+  return gridLayout;
 };
 
 /**
@@ -169,19 +230,19 @@ Reticulator.prototype.buildGridLayout = function () {
 */
 Reticulator.prototype.buildGrid = function () {
   var i, cumulative;
-  if (this.options.columns !== 0) {
-    
-    // basegrid basic settings all together in this map
-    this.basegrid = {
-      layout: this.buildGridLayout(), // layout object
-      guides: (this.options.gutter === 0 ? this.options.columns : this.options.columns * 2), // number of guides that we need to draw
-      cols: this.options.columns === 0 ? 0 : ((this.options.width - ((this.options.columns - 1) * this.options.gutter)) / this.options.columns) // width for every column
-    };
 
+  // basegrid basic settings all together in this map
+  this.basegrid = {
+    layout: this.buildGridLayout(), // layout object
+    guides: (this.options.gutter === 0 ? this.options.columns : this.options.columns * 2), // number of guides that we need to draw
+    cols: this.options.columns === 0 ? 0 : ((this.options.width - ((this.options.columns - 1) * this.options.gutter)) / this.options.columns) // width for every column
+  };
+  if (this.options.columns !== 0) {
     cumulative = 0;
     for (i = 0; i < this.basegrid.guides; i++) {
       // vertical guides here
+      var guide = new VerticalGuide()
+      this.basegrid.layout.appendChild(guide);
     }
-    
   }
 };
