@@ -106,7 +106,6 @@ var ResizeGuideContainer = function () {
 
 /**
 * VerticalGuide.
-* @constructor
 * 
 */
 var VerticalGuide = function (options) {
@@ -125,6 +124,7 @@ var VerticalGuide = function (options) {
   // style it now
   guide.style.position =    "absolute";
   guide.style.height =      (document.documentElement.clientHeight > document.body.scrollHeight ? document.documentElement.clientHeight : document.body.scrollHeight) + "px";
+  guide.style.top =         0;
   guide.style.width =       "1px";
   guide.style.borderLeft =  "1px solid " + this.options.color;
   guide.style.opacity =     this.options.opacity;
@@ -135,8 +135,21 @@ var VerticalGuide = function (options) {
 
 
 /**
+* Adding a vertical guide to the page.
+* 
+*/
+var addVerticalGuide = function(options) {
+
+  var guide = new VerticalGuide(options);
+  guide.style.left = String(options.left).indexOf("%") != -1 ? options.left : options.left + "px";
+  document.body.appendChild(guide);
+  
+  return guide;
+};
+
+
+/**
 * HorizontalGuide.
-* @constructor
 * 
 */
 var HorizontalGuide = function (options) {
@@ -155,6 +168,7 @@ var HorizontalGuide = function (options) {
   // style it now
   guide.style.position =    "absolute";
   guide.style.width =      (document.documentElement.clientWidth > document.body.scrollWidth ? document.documentElement.clientWidth : document.body.scrollWidth) + "px";
+  guide.style.left =         0;
   guide.style.height =       "1px";
   guide.style.borderTop =  "1px solid " + this.options.color;
   guide.style.opacity =     this.options.opacity;
@@ -163,8 +177,18 @@ var HorizontalGuide = function (options) {
   return guide;
 };
 
+/**
+* Adding a horizontal guide to the page.
+* 
+*/
+var addHorizontalGuide = function(options) {
 
-
+  var guide = new HorizontalGuide(options);
+  guide.style.top = String(options.top).indexOf("%") != -1 ? options.top : options.top + "px";
+  document.body.appendChild(guide);
+  
+  return guide;
+};
 
 
 
