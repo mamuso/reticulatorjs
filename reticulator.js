@@ -124,17 +124,12 @@ var VerticalGuide = function (options) {
 
   // style it now
   guide.style.position =    "absolute";
-  guide.style.height =      document.documentElement.clientHeight + "px";
+  guide.style.height =      (document.documentElement.clientHeight > document.body.scrollHeight ? document.documentElement.clientHeight : document.body.scrollHeight) + "px";
   guide.style.width =       "1px";
-  guide.style.borderLeft =  "1px solid red"
-  
-  // $(gridGuide).css({
-  //     position: "absolute",
-  //     height: $(document).height() + "px",
-  //     borderLeft: "1px solid " + options.guideColor,
-  //     left: cummulativecount + "px"
-  // });
-  
+  guide.style.borderLeft =  "1px solid " + this.options.color;
+  guide.style.opacity =     this.options.opacity;
+  guide.style.filter =      "alpha(opacity=" + this.options.opacity * 100 + ")";
+
   return guide
 };
 
@@ -177,8 +172,6 @@ var Reticulator = function (options) {
   // overriding the default options
   this.options = this.defaults.merge(options);
 
-  alert(document.documentElement.clientHeight + "px")
-
   // here we go!
   this.buildGrid();
   
@@ -186,7 +179,7 @@ var Reticulator = function (options) {
   // onresize behavior
   window.onresize = function(){
     ResizeGuideContainer();
-  }
+  };
 };
 
 /**
@@ -237,12 +230,25 @@ Reticulator.prototype.buildGrid = function () {
     guides: (this.options.gutter === 0 ? this.options.columns : this.options.columns * 2), // number of guides that we need to draw
     cols: this.options.columns === 0 ? 0 : ((this.options.width - ((this.options.columns - 1) * this.options.gutter)) / this.options.columns) // width for every column
   };
+    
   if (this.options.columns !== 0) {
     cumulative = 0;
+    
+    // put your guide here 
     for (i = 0; i < this.basegrid.guides; i++) {
       // vertical guides here
-      var guide = new VerticalGuide()
+      var guide = new VerticalGuide({
+        color: this.options.color,
+        opacity: this.options.opacity
+      });
+      
+      guide.style.left = cumulative + "px";
+      
       this.basegrid.layout.appendChild(guide);
+      
+      if(i%2 == 0) cumulative = cumulative + this.basegrid.cols;
+      else cumulative = cumulative + this.options.gutter;
+      
     }
   }
 };
