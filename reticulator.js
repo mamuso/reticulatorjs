@@ -51,7 +51,7 @@ Object.prototype.merge = function (ob) {
 * @constructor
 * 
 */
-var isExplorer = function () {
+var IsExplorer = function () {
   return (navigator.userAgent.indexOf('MSIE') !== -1);
 };
 
@@ -70,7 +70,7 @@ var BuildGuideContainer = function () {
 
     // style it now
     guideCont.style.height =    "1px";
-    guideCont.style.width =     (isExplorer() ? document.body.offsetWidth : window.innerWidth) + "px";
+    guideCont.style.width =     (new IsExplorer() ? document.body.offsetWidth : window.innerWidth) + "px";
     guideCont.style.position =  "absolute";
     guideCont.style.top =       0;
     guideCont.style.left =      0;
@@ -83,11 +83,11 @@ var BuildGuideContainer = function () {
 };
 
 /**
-* vGuide.
+* VerticalGuide.
 * @constructor
 * 
 */
-var vGuide = function (options) {
+var VerticalGuide = function (options) {
   // default guide options
   this.defaults = {
   };
@@ -97,11 +97,11 @@ var vGuide = function (options) {
 
 
 /**
-* hGuide.
+* HorizontalGuide.
 * @constructor
 * 
 */
-var hGuide = function (options) {
+var HorizontalGuide = function (options) {
   // default guide options
   this.defaults = {
   };
@@ -147,10 +147,20 @@ Reticulator.prototype.buildGridLayout = function () {
     case "right":
       margins = "0px 0px 0px auto";
       break;
-  }    
+  }
 
   // here we go!
   gridLayout = document.createElement("div");
+  
+  // style this
+  gridLayout.style.height =    "1px";
+  gridLayout.style.width =     this.options.width + "px";
+  gridLayout.style.position =  "relative";
+  gridLayout.style.margin =     margins;
+  
+  // to the container
+  BuildGuideContainer().appendChild(gridLayout);        
+  
 };
 
 /**
@@ -160,9 +170,7 @@ Reticulator.prototype.buildGridLayout = function () {
 Reticulator.prototype.buildGrid = function () {
   // basegrid basics
   this.basegrid = {
-    cont: new BuildGuideContainer(),
-    cols: this.options.columns === 0 ? 0 : ((this.options.width - ((this.options.columns - 1) * this.options.gutter)) / this.options.columns)
+    cols: this.options.columns === 0 ? 0 : ((this.options.width - ((this.options.columns - 1) * this.options.gutter)) / this.options.columns),
+    layout: this.buildGridLayout()
   };
-  // set the grid layout
-  this.buildGridLayout();
 };
