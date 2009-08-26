@@ -32,7 +32,17 @@
 
 <p>Your mind is like a parachute, it works better when its open</p>
 <script type="text/javascript" charset="utf-8">
- var a = new Reticulator();
+ var a = new Reticulator({
+   columns: 0,
+   color: "#FF0099"
+ });
+ a.addVerticalGuide("700");
+ a.addVerticalGuide("710");
+ a.addHorizontalGuide("140");
+ var i;
+ for( i = 0; i < 10; i++) {
+   a.addHorizontalGuide( (i + 1) * 50 + 50);
+ }
 </script>
 </body>
 </html>

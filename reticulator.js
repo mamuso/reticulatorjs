@@ -130,7 +130,7 @@ var VerticalGuide = function (options) {
   guide.style.opacity =     this.options.opacity;
   guide.style.filter =      "alpha(opacity=" + this.options.opacity * 100 + ")";
 
-  return guide
+  return guide;
 };
 
 
@@ -140,13 +140,27 @@ var VerticalGuide = function (options) {
 * 
 */
 var HorizontalGuide = function (options) {
+  var guide;
+  
   // default guide options
   this.defaults = {
     color: "#00FF00",
     opacity: 0.7
   };
   // we can override the default options
-  this.options = this.defaults.merge(options);    
+  this.options = this.defaults.merge(options);
+  
+  guide = document.createElement("div");
+
+  // style it now
+  guide.style.position =    "absolute";
+  guide.style.width =      (document.documentElement.clientWidth > document.body.scrollWidth ? document.documentElement.clientWidth : document.body.scrollWidth) + "px";
+  guide.style.height =       "1px";
+  guide.style.borderTop =  "1px solid " + this.options.color;
+  guide.style.opacity =     this.options.opacity;
+  guide.style.filter =      "alpha(opacity=" + this.options.opacity * 100 + ")";
+
+  return guide;
 };
 
 
@@ -217,6 +231,44 @@ Reticulator.prototype.buildGridLayout = function () {
   return gridLayout;
 };
 
+
+/**
+* Adds an extra vertical guide to the basegrid
+* 
+*/
+Reticulator.prototype.addVerticalGuide = function (left) {
+  var guide = new VerticalGuide({
+    color: this.options.color,
+    opacity: this.options.opacity
+  });
+  
+  guide.style.left = String(left).indexOf("%") != -1 ? left : left + "px";
+  
+  this.basegrid.layout.appendChild(guide);
+  
+  return guide;
+};
+
+
+/**
+* Adds an extra vertical guide to the basegrid
+* 
+*/
+Reticulator.prototype.addHorizontalGuide = function (top) {
+  var guide = new HorizontalGuide({
+    color: this.options.color,
+    opacity: this.options.opacity
+  });
+  
+  guide.style.width = "100%"; // adjust the width to the grid
+  guide.style.top = String(top).indexOf("%") != -1 ? top : top + "px";
+
+  this.basegrid.layout.appendChild(guide);
+  
+  return guide;
+};
+
+
 /**
 * Hub function that calls all the grid things :)
 * 
@@ -252,3 +304,4 @@ Reticulator.prototype.buildGrid = function () {
     }
   }
 };
+
