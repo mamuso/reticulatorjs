@@ -24,81 +24,76 @@
 *
 */
 
-
 /**
-* Reticulator is an abstract base that contains the basics of the grid.
-* @constructor
+* @returns an unique identificator for the guide container 
 * 
 */
-var Reticulator = function(options) {
-    // default grid
-    this.defaults = {
-        width: 951,
-        columns: 16, // => 0 if you want to create an empty base
-        gutter: 9,
-        align: "center",
-        color: "#00FF00",
-        opacity: 0.7,
-    };
-    // overriding the default options
-    this.options = this.defaults.merge(options);
-        
-    // here we go!
-    this.buildGrid();
-}
+var ReticulatorId = "ReticulatorCont" + String((new Date()).getTime()).replace(/\D/gi, '');
 
 /**
-* Method to build grid.
-* @returns the built object
-* 
+* merge objects prototype
+*
 */
-Reticulator.prototype.buildGrid = function() {
-    // basegrid basics
-    this.basegrid = {
-        cont: new buildGuideContainer(),
-        cols: this.options.columns == 0 ? 0 : ( ( this.options.width - ( ( this.options.columns - 1 ) * this.options.gutter ) ) / this.options.columns )
+Object.prototype.merge = function (ob) {
+  var o, i, z;
+  o = this;
+  i = 0;
+  for (z in ob) {
+    if (ob.hasOwnProperty(z)) {
+      o[z] = ob[z];
     }
-}
-
-/**
-* Building an standard container for all the grids and guides.
-* @constructor
-* 
-*/
-var buildGuideContainer = function(){
-    var guideCont = document.createElement("div");
-    // style it now
-    guideCont.style.height =    "10px";
-    guideCont.style.width =     (isExplorer() ? document.body.offsetWidth : window.innerWidth) + "px";
-    guideCont.style.position =  "absolute";
-    guideCont.style.background = "red";
-    guideCont.style.top =       0;
-    guideCont.style.left =      0;
-
-    document.body.appendChild(guideCont);
-} 
+  }
+  return o;
+};
 
 /**
 * Are we in explorer?
 * @constructor
 * 
 */
-var isExplorer = function() {
-    return (navigator.userAgent.indexOf('MSIE') !=-1)
-}
+var isExplorer = function () {
+  return (navigator.userAgent.indexOf('MSIE') !== -1);
+};
+
+/**
+* Building an standard container (once) for all the grids and guides.
+* @constructor
+* 
+*/
+var BuildGuideContainer = function () {
+  // are you there?
+  var guideCont = document.getElementById(ReticulatorId);
+
+  if (guideCont === null) {
+    guideCont = document.createElement("div");
+    guideCont.id =              ReticulatorId;
+
+    // style it now
+    guideCont.style.height =    "1px";
+    guideCont.style.width =     (isExplorer() ? document.body.offsetWidth : window.innerWidth) + "px";
+    guideCont.style.position =  "absolute";
+    guideCont.style.top =       0;
+    guideCont.style.left =      0;
+
+    // send this to the body
+    document.body.appendChild(guideCont);        
+  }
+
+  return guideCont;
+};
 
 /**
 * vGuide.
 * @constructor
 * 
 */
-var vGuide = function(options) {
-    // default guide options
-    this.defaults = {
-    };
-    // we can override the default options
-    this.options = this.defaults.merge(options);    
-}
+var vGuide = function (options) {
+  // default guide options
+  this.defaults = {
+  };
+  // we can override the default options
+  this.options = this.defaults.merge(options);    
+};
 
 
 /**
@@ -106,16 +101,68 @@ var vGuide = function(options) {
 * @constructor
 * 
 */
-var hGuide = function(options) {
-    // default guide options
-    this.defaults = {
-    };
-    // we can override the default options
-    this.options = this.defaults.merge(options);    
-}
+var hGuide = function (options) {
+  // default guide options
+  this.defaults = {
+  };
+  // we can override the default options
+  this.options = this.defaults.merge(options);    
+};
 
 /**
-* @description merge objects prototype
-*
+* Reticulator is an abstract base that contains the basics of the grid.
+* @constructor
+* 
 */
-Object.prototype.merge = (function (ob) {var o = this;var i = 0;for (var z in ob) {if (ob.hasOwnProperty(z)) {o[z] = ob[z];}}return o;})
+var Reticulator = function (options) {
+  // default grid
+  this.defaults = {
+    width: 951,
+    columns: 16, // => 0 if you want to create an empty base
+    gutter: 9,
+    align: "center",
+    color: "#00FF00",
+    opacity: 0.7
+  };
+  // overriding the default options
+  this.options = this.defaults.merge(options);
+
+  // here we go!
+  this.buildGrid();
+};
+
+/**
+* Method to build grid layout div.
+* @returns the layout div
+* 
+*/
+Reticulator.prototype.buildGridLayout = function () {
+  var margins, gridLayout;
+  // aling this mess
+  margins = "0px auto"; // center by default
+  switch (this.options.align) {
+    case "left":
+      margins = "0px";
+      break;
+    case "right":
+      margins = "0px 0px 0px auto";
+      break;
+  }    
+
+  // here we go!
+  gridLayout = document.createElement("div");
+};
+
+/**
+* Hub function that calls all the grid things :)
+* 
+*/
+Reticulator.prototype.buildGrid = function () {
+  // basegrid basics
+  this.basegrid = {
+    cont: new BuildGuideContainer(),
+    cols: this.options.columns === 0 ? 0 : ((this.options.width - ((this.options.columns - 1) * this.options.gutter)) / this.options.columns)
+  };
+  // set the grid layout
+  this.buildGridLayout();
+};
