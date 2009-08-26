@@ -71,7 +71,7 @@ var BuildGuideContainer = function () {
     // style it now
     guideCont.style.height =    "1px";
     guideCont.style.width =     (new IsExplorer() ? document.body.offsetWidth : window.innerWidth) + "px";
-    guideCont.style.position =  "absolute";
+    guideCont.style.position =  (new IsExplorer() ? "absolute" : "fixed");
     guideCont.style.top =       0;
     guideCont.style.left =      0;
 
@@ -168,9 +168,20 @@ Reticulator.prototype.buildGridLayout = function () {
 * 
 */
 Reticulator.prototype.buildGrid = function () {
-  // basegrid basics
-  this.basegrid = {
-    cols: this.options.columns === 0 ? 0 : ((this.options.width - ((this.options.columns - 1) * this.options.gutter)) / this.options.columns),
-    layout: this.buildGridLayout()
-  };
+  var i, cumulative;
+  if (this.options.columns !== 0) {
+    
+    // basegrid basic settings all together in this map
+    this.basegrid = {
+      layout: this.buildGridLayout(), // layout object
+      guides: (this.options.gutter === 0 ? this.options.columns : this.options.columns * 2), // number of guides that we need to draw
+      cols: this.options.columns === 0 ? 0 : ((this.options.width - ((this.options.columns - 1) * this.options.gutter)) / this.options.columns) // width for every column
+    };
+
+    cumulative = 0;
+    for (i = 0; i < this.basegrid.guides; i++) {
+      // vertical guides here
+    }
+    
+  }
 };
