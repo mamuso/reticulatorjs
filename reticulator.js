@@ -338,7 +338,7 @@ Reticulator.prototype.buildGrid = function () {
 
 
 /**
-* deactivate / activate by g + r key combination
+* hide/show by g + r key combination
 * 
 */
 var reticulatorKey = {};
