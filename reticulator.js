@@ -76,11 +76,12 @@ var BuildGuideContainer = function () {
     guideCont.id =              ReticulatorId;
     
     // style it now
-    guideCont.style.height =    "1px";
-    guideCont.style.width =     document.documentElement.clientWidth + "px";
+    guideCont.style.height =    "100%";
+    guideCont.style.width =     "100%";
     guideCont.style.padding =   "0 0 0 0";
     guideCont.style.margin =    "0 0 0 0";
     guideCont.style.position =  "absolute";
+    guideCont.style.overflow =  "hidden";
     guideCont.style.top =       0;
     guideCont.style.left =      0;
     guideCont.style.zIndex =    9000000;
