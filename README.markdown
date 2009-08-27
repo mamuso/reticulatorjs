@@ -18,10 +18,3 @@ Yes, you can! (now)
 - Eeehm... anything else
 
 
-Yes, you will!
--------------
-- Use solid grids
-- See beautiful test (thanks to [sugartest](http://sugartest.scriptia.net/))
-
-Yes, I know
------------

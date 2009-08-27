@@ -11,7 +11,14 @@
   <script src="../reticulator.js" type="text/javascript" charset="utf-8"></script>
   <script type="text/javascript" charset="utf-8">
   window.onload = function () {
+    // regular grid
     var grid = new Reticulator();
+    // adding horizontal rules to the regular grid
+    grid.addHorizontalGuide(50);
+    grid.addHorizontalGuide(70);
+    
+    // add an individual guide
+    addHorizontalGuide({top:125, color: "#0099CC"});
   };
   </script>
 
@@ -49,6 +56,10 @@
         sidebar
       </div><!-- .sidebar -->
     </div><!-- .wrapper -->      
-  </div>
+  </div><!-- #content -->
+  <div id="footer">
+    <p>Take a look at <a href="#">reticulator.js</a></p>
+  </div><!-- #footer -->
+  
 </body>
 </html>
