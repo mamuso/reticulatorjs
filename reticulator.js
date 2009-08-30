@@ -44,9 +44,9 @@ Object.prototype.merge = function (ob) {
 * @returns an unique identificator for the guide container 
 * 
 */
-var ReticulatorId = "ReticulatorCont" + String((new Date()).getTime()).replace(/\D/gi, '');
-
-
+var ReticulatorId, ReticulatorGrids;
+ReticulatorId = "ReticulatorCont" + String((new Date()).getTime()).replace(/\D/gi, '');
+ReticulatorGrids = [];
 
 
 /**
@@ -76,12 +76,11 @@ var BuildGuideContainer = function () {
     guideCont.id =              ReticulatorId;
     
     // style it now
-    guideCont.style.height =    "100%";
-    guideCont.style.width =     "100%";
+    guideCont.style.height =    "1px";
+    guideCont.style.width =     document.documentElement.clientWidth + "px";
     guideCont.style.padding =   "0 0 0 0";
     guideCont.style.margin =    "0 0 0 0";
     guideCont.style.position =  "absolute";
-    guideCont.style.overflow =  "hidden";
     guideCont.style.top =       0;
     guideCont.style.left =      0;
     guideCont.style.zIndex =    9000000;
@@ -209,6 +208,7 @@ var Reticulator = function (options) {
     width: 951,
     columns: 16, // => 0 if you want to create an empty base
     gutter: 9,
+    offset: 0,
     align: "center",
     color: "#00FF00",
     opacity: 0.5
@@ -219,10 +219,15 @@ var Reticulator = function (options) {
   // here we go!
   this.buildGrid();
   
+  ReticulatorGrids.push(this);
   
   // onresize behavior
   window.onresize = function(){
+    var i = 0;
     ResizeGuideContainer();
+    while (element = ReticulatorGrids[i++]) {
+      element.alignGridLayout();
+    }
   };
     
 };
@@ -233,7 +238,7 @@ var Reticulator = function (options) {
 * 
 */
 Reticulator.prototype.buildGridLayout = function () {
-  var margins, gridLayout;
+  var gridLayout;
   // aling this mess
   margins = "0px auto"; // center by default
   switch (this.options.align) {
@@ -251,8 +256,8 @@ Reticulator.prototype.buildGridLayout = function () {
   // style this
   gridLayout.style.height =    "1px";
   gridLayout.style.width =     this.options.width + "px";
-  gridLayout.style.position =  "relative";
-  gridLayout.style.margin =     margins;
+  gridLayout.style.position =  "absolute";
+  gridLayout.style.margin =     "0 0 0 0";
   gridLayout.style.padding =    "0 0 0 0";
   gridLayout.style.textAlign =  "left";
     
@@ -262,6 +267,30 @@ Reticulator.prototype.buildGridLayout = function () {
   return gridLayout;
 };
 
+
+/**
+* Align grid layout div.
+* @returns the layout div
+* 
+*/
+Reticulator.prototype.alignGridLayout = function () {
+  var pos, middle;
+  switch (this.options.align) {
+    case "center":
+      middle = (document.documentElement.clientWidth > document.body.scrollWidth ? document.documentElement.clientWidth : document.body.scrollWidth)/2;
+      pos = middle - ((this.options.width)/2) + this.options.offset;
+      this.basegrid.layout.style.left = pos + "px";
+      break;
+    case "left":
+      left = 0 + this.options.offset;
+      this.basegrid.layout.style.left = pos + "px";
+      break;
+    case "right":
+      pos = 0 + this.options.offset;
+      this.basegrid.layout.style.right = pos + "px";
+      break;
+  };
+};
 
 /**
 * Adds an extra vertical guide to the basegrid
@@ -313,6 +342,8 @@ Reticulator.prototype.buildGrid = function () {
     guides: (this.options.gutter === 0 ? this.options.columns : this.options.columns * 2), // number of guides that we need to draw
     cols: this.options.columns === 0 ? 0 : ((this.options.width - ((this.options.columns - 1) * this.options.gutter)) / this.options.columns) // width for every column
   };
+  
+  this.alignGridLayout();
 
   if (this.options.columns !== 0) {
     cumulative = 0;

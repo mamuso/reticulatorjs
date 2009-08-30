@@ -17,4 +17,3 @@ Yes, you can! (now)
 - Toggle the guides using "g + r"
 - Eeehm... anything else
 
-
