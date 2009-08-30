@@ -12,12 +12,10 @@ This library takes its name from the fancy <a href="http://sofanaranja.com/retic
 
 Tested successfully in the following browsers:
 
-  <ul>
-    <li><span>Firefox 3+</span></li>
-    <li><span>Internet Explorer 6+</span></li>
-    <li><span>Safari 3+</span></li>
-    <li><span>Opera 9+</span></li>
-  </ul>
+  - Firefox 3+
+  - Internet Explorer 6+
+  - Safari 3+
+  - Opera 9+
   
 In a near future I must finish my unit tests for this library.
 
@@ -30,8 +28,7 @@ You need to include reticulator.js in your html file.
 
 To get the default grid (951/16/9) just write:
  
-
-  var grid = new Reticulator();
+    var grid = new Reticulator();
 
 
 Customize your grid using the following options:
@@ -102,30 +99,30 @@ Customize your grid using the following options:
 Then, if you want a red grid with 10 columns and 1000px width, write:
 
 
-  var grid = new Reticulator({
-    width: 1000,
-    columns: 10,
-    color: "red"
-  });
+    var grid = new Reticulator({
+      width: 1000,
+      columns: 10,
+      color: "red"
+    });
 
 
 Add extra guides to your grid:
 
-  var grid = new Reticulator();
+    var grid = new Reticulator();
   
-  // add a vertical guide
-  grid.addVerticalGuide(50);
+    // add a vertical guide
+    grid.addVerticalGuide(50);
   
-  // add an horizontal guide
-  grid.addHorizontalGuide(50);
+    // add an horizontal guide
+    grid.addHorizontalGuide(50);
 
 You can forget the basegrid and add individual guides. For vertical guides:
 
-  addVerticalGuide({
-    color: "#00FF00",
-    opacity: 0.5,
-    left: 100
-  });
+    addVerticalGuide({
+      color: "#00FF00",
+      opacity: 0.5,
+      left: 100
+    });
 
 
 <table border="0" cellspacing="0" cellpadding="0">
@@ -161,15 +158,12 @@ You can forget the basegrid and add individual guides. For vertical guides:
 
 For horizontal guides:
 
-<pre>
-  <code>
     addHorizontalGuide({
       color: "#00FF00",
       opacity: 0.5,
       top: 100
     });
-  </code>
-</pre>
+
 
 <table border="0" cellspacing="0" cellpadding="0">
   <thead>
@@ -210,14 +204,12 @@ Anyway you can use the bookmarklet :)
 Let's see:
 
 
-<ul>
-  <li><a href="http://reticulatorjs.mamuso.net/example_simplegrid">Simple grid</a></li>
-  <li><a href="http://reticulatorjs.mamuso.net/example_customgrid_extraguides">Custom grid adding extra guides</a></li>
-  <li><a href="http://reticulatorjs.mamuso.net/example_twogrids">Two grids</a></li>
-  <li><a href="http://reticulatorjs.mamuso.net/example_emptygrid">Empty grid adding extra guides</a></li>
-  <li><a href="http://reticulatorjs.mamuso.net/example_horizontal">Only a horizontal guide</a></li>
-  <li><a href="http://reticulatorjs.mamuso.net/example_vertical">Only a vertical guide</a></li>
-</ul>
+  - <a href="http://reticulatorjs.mamuso.net/example_simplegrid">Simple grid</a>
+  - <a href="http://reticulatorjs.mamuso.net/example_customgrid_extraguides">Custom grid adding extra guides</a>
+  - <a href="http://reticulatorjs.mamuso.net/example_twogrids">Two grids</a>
+  - <a href="http://reticulatorjs.mamuso.net/example_emptygrid">Empty grid adding extra guides</a>
+  - <a href="http://reticulatorjs.mamuso.net/example_horizontal">Only a horizontal guide</a>
+  - <a href="http://reticulatorjs.mamuso.net/example_vertical">Only a vertical guide</a>
 
 
 ## download
