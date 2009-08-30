@@ -239,17 +239,7 @@ var Reticulator = function (options) {
 */
 Reticulator.prototype.buildGridLayout = function () {
   var gridLayout;
-  // aling this mess
-  margins = "0px auto"; // center by default
-  switch (this.options.align) {
-    case "left":
-      margins = "0px";
-      break;
-    case "right":
-      margins = "0px 0px 0px auto";
-      break;
-  }
-
+  
   // here we go!
   gridLayout = document.createElement("div");
   
