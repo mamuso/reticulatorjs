@@ -177,7 +177,7 @@ var HorizontalGuide = function (options) {
   guide.style.borderTop =  "1px solid " + this.options.color;
   guide.style.opacity =     this.options.opacity;
   guide.style.filter =      "alpha(opacity=" + this.options.opacity * 100 + ")";
-  guide.className =         ReticulatorId;
+  guide.className =         ReticulatorId + " hguide" + ReticulatorId;
 
   return guide;
 };
@@ -211,7 +211,8 @@ var Reticulator = function (options) {
     offset: 0,
     align: "center",
     color: "#00FF00",
-    opacity: 0.5
+    opacity: 0.5,
+    zindex: 9000000
   };
   // overriding the default options
   this.options = this.defaults.merge(options);
@@ -250,9 +251,11 @@ Reticulator.prototype.buildGridLayout = function () {
   gridLayout.style.margin =     "0 0 0 0";
   gridLayout.style.padding =    "0 0 0 0";
   gridLayout.style.textAlign =  "left";
+  gridLayout.style.zIndex =     this.options.zindex;
+  gridLayout.style.top =        "0px";
     
   // send this to the container
-  BuildGuideContainer().appendChild(gridLayout);        
+  document.body.appendChild(gridLayout);        
   
   return gridLayout;
 };
