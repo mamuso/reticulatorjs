@@ -1,0 +1,158 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>reticulatorjs - get a grid</title>
+  <link rel="stylesheet" href="stylesheets/reticulatorjs.css" type="text/css" media="screen" charset="utf-8"/>
+    
+  
+  <script type="text/javascript" src="../reticulator.js" charset="utf-8"></script>
+  <script type="text/javascript" charset="utf-8">
+    window.onload = function () {
+      
+      var grid = new Reticulator();
+      var grid2 = new Reticulator({
+        columns: 8,
+        gutter: 9,
+        color: "#FF0066",
+        opacity: 0.5
+      });
+      
+    };
+  </script>
+
+</head>
+
+<body>
+
+
+  <div id="header">
+    <div class="wrapper">
+      <h1>
+        <a href="http://reticulatorjs.mamuso.net/"><span>Reticulator, get a grid</span></a>
+      </h1>
+      <ul>
+        <li><a href="http://reticulatorjs.mamuso.net/#getagrid">get a grid</a></li>
+        <li><a href="http://reticulatorjs.mamuso.net/#configuration">usage and configuration</a></li>
+        <li><a href="http://reticulatorjs.mamuso.net/#examples">examples</a></li>
+        <li><a href="http://reticulatorjs.mamuso.net/#download">download</a></li>
+        <li><a href="http://reticulatorjs.mamuso.net/#support">support</a></li>
+      </ul>
+    </div><!-- .wrapper -->
+  </div><!-- #header -->
+  <div id="content">
+    <div class="wrapper">
+      <div class="maincolumn">
+        
+
+<h2>Use 2 grids at the same time</h2>
+
+<p>You only need to include the reticulator.js file and make a call like this</p>
+
+<pre>
+  <code>
+    var grid = new Reticulator();
+    var grid2 = new Reticulator({
+      columns: 8,
+      gutter: 9,
+      color: "#FF0066",
+      opacity: 0.5
+    });
+  </code>
+</pre>
+
+<div class="column">
+  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p> 
+  <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+</div>
+
+<div class="column">
+  <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+  <p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p> 
+</div>
+
+<h2>wadus</h2>
+
+<span class="picture">
+  <img src="/images/smile.jpg" alt="Smile"/>
+  <span>wadus</span>
+</span>
+
+<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+
+<p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident.</p>
+      </div><!-- .maincolumn -->
+      <div class="sidebar">
+
+        <h2>get a bookmarklet</h2>
+        <ol>
+          <li>
+            <div>
+            <p>
+              Configure your bookmarklet to use it with your favourite grid
+            </p>
+
+            <form action="#" method="post" accept-charset="utf-8" id="bookmarkletform">
+              <p>
+                <label for="grid_align">align</label>
+                <select name="grid_align" id="grid_align">
+                  <option value="center">center</option>
+                  <option value="left">left</option>
+                  <option value="right">right</option>
+                </select>
+              </p>
+              <p>
+                <label for="grid_width">width</label>
+                <input type="text" name="grid_width" value="951" id="grid_width"/>
+              </p>
+              <p>
+                <label for="grid_offset">offset</label>
+                <input type="text" name="grid_offset" value="0" id="grid_offset"/>
+              </p>
+              <p>
+                <label for="grid_columns">columns</label>
+                <input type="text" name="grid_columns" value="16" id="grid_columns"/>
+              </p>
+              <p>
+                <label for="grid_gutter">gutter</label>
+                <input type="text" name="grid_gutter" value="9" id="grid_gutter"/>
+              </p>
+              <p>
+                <label for="grid_color">color</label>
+                <input type="text" name="grid_color" value="#00FF00" id="grid_color"/>
+              </p>
+              <p>
+                <label for="grid_opacity">opacity</label>
+                <input type="text" name="grid_opacity" value="0.5" id="grid_opacity"/>
+              </p>
+              <p>
+                <label for="grid_zindex">zindex</label>
+                <input type="text" name="grid_zindex" value="9000000" id="grid_zindex"/>
+              </p>
+
+              <div>
+                <button type="submit">Update bookmarklet</button>
+              </div>
+            </form>
+            </div>
+          </li>
+          <li>
+            <div>
+            <p>
+              Drag this link: <a href="#" id="reticulatorjsbookmarklet">Show grid</a> up to your Bookmarks Toolbar. 
+              <em id="updatedbookmarklet">something went wrong with the js here :(</em>
+            </p>
+            </div>
+          </li>
+        </ol>
+      </div><!-- .sidebar -->
+    </div><!-- .wrapper -->      
+  </div><!-- #content -->
+  <div id="footer">
+    <p>Hooray :)</p>
+  </div><!-- #footer -->
+
+</body>
+</html>

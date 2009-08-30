@@ -1,0 +1,198 @@
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: x-small;
+    font-variant: normal;
+    font-style: normal;
+    font-weight: normal;
+    line-height: 1.5em;
+    text-align: center;
+    background: #EFEFEF url('../images/bg.gif') center top;
+}
+*{
+    margin: 0;
+    padding: 0;
+}
+a {
+  color: #33B4B2;
+}
+h2, h3, h4 {
+  font-weight:normal;
+  line-height:1.25em;
+  margin:0 0 0.5em;
+}
+h2 {
+  font-size: 2em;
+  color: #666666;
+  padding: 1.1em 0.2em 0.2em 0.2em;
+  border-bottom: 1px solid #DC6228;
+}
+p {
+  font-size: 1.2em;
+  line-height: 1.4em;
+  padding: 0.5em 0;
+}
+
+ul {
+  font-size: 1.2em;
+  line-height: 1.4em;
+  padding: 0.5em 1.5em;
+  color: #33B4B2;
+}
+ul span {
+  color: #000000;
+}
+.wrapper {
+  width: 951px;
+  margin: 0 auto;
+  text-align: left;
+  overflow: hidden;
+}
+
+#header {
+  padding: 4.1em 0 3.7em 0;
+}
+#header h1 {
+  font-size: x-small;
+  float: left;
+}
+#header h1 a {
+  display: block;
+  width: 19em;
+  height: 4.7em;
+  background: url('../images/reticulator_logo.gif') no-repeat center center;
+}
+#header h1 a span {
+  display: none;
+}
+#header ul {
+  float: right;
+  list-style: none;
+}
+#header ul li{
+  float: left;
+  margin-left: 1.3em;
+}
+#header ul li a {
+  padding: 0.7em 1.3em;
+  display: block;
+  font-size: 1.2em;
+  color: #000000;
+  background: #EFE229;
+  text-decoration: none;
+}
+
+#content {
+  background: url('../images/bg_content.png') repeat-x top;
+}
+#content .wrapper {
+  background: #FFFFFF;
+}
+#content .maincolumn {
+  padding: 0 9px 20px 20px;
+  float: left;
+  width: 691px;
+}
+#content .sidebar {
+  padding: 0 20px 20px 0;
+  float: left;
+  width: 210px;
+}
+.sidebar ol {
+  padding-left: 1.5em;
+  color: #DC6228;
+  font-size: 1.8em;
+}
+.sidebar ol li {
+  padding-bottom: 1em;
+}
+.sidebar ol div{
+  font-size: x-small;
+  color: #000000;
+}
+.sidebar ol li form p {
+  padding: 0.2em 0;
+}
+.sidebar ol li form div {
+  padding: 1em 0 0 0;
+  text-align: center;
+}
+.sidebar ol li form div button {
+  padding: 0.5em 0.7em;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 1.2em;
+  color: #FFFFFF;
+  border: none;
+  background: #DC6228;
+}
+.sidebar ol li form label {
+  font-weight: bold;
+  width: 4.8em;
+  padding-top: 0.3em;
+  float: left;
+}
+.sidebar ol li form input {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 1em;
+  width: 9em;
+}
+.sidebar ol li form select {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 1em;
+}
+.picture {
+  float: right;
+  margin: 0 0 1.5em 1.5em;
+  padding: 1em;
+  background: #E4E4E4;
+}
+
+.picture span {
+  display: block;
+  font-size: 1.2em;
+  color: #888888;
+  font-style: italic;
+  font-family: times, serif;
+}
+
+#updatedbookmarklet {
+  color: #999;
+}
+
+table {
+  width: 100%;
+}
+table thead th {
+  font-size: 1.2em;
+  padding: 0.5em;
+  color: #666666;
+}
+table tbody td {
+  font-size: 1.2em;
+  padding: 0.5em;
+  background: #F0EFEE;
+  border-bottom: 3px solid #FFF;
+}
+table tbody td span {
+  color: #999999;
+}
+
+pre {
+  border-left: 5px solid #EFE229;
+  font-size: 1.2em;
+  color: #000000;
+  background: #F0EFEE;
+  margin: 1em 0;
+  padding: 0em 1.5em;
+}
+code {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+#footer {
+  padding: 0.3em 0 2em 0;
+}
+.column {
+  float:left;
+  width:332px;
+  margin-right: 9px;
+}
