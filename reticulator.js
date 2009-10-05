@@ -38,9 +38,9 @@ var merge = function (o, ob) {
     }
   }
   return o;
-};
+},
 
-var each = function(col, m, args) {
+each = function(col, m, args) {
   var i = 0, it;
   args = [].slice.call(arguments, 2);
   for ( ; i < col.length; i +=1) {
@@ -53,25 +53,28 @@ var each = function(col, m, args) {
     }
   }
   return col;
-};
+},
 
 /**
 * Sets element style properties
 */ 
-var style = function(element, hash) {
-  var p, s = element.style;
-  for (p in hash) {
-    // console.log(p, hash[p]);
-    s[p] = hash[p];
-  }
+style = function(element, hash) {
+  merge(element.style, hash);
   return element;
-};
+},
 
 /**
 * Reticulator instances
 */ 
-var _reticulators = [],
-_guideContainer;
+_reticulators = [],
+/**
+* Unique guide container
+*/  
+_guideContainer,
+/**
+* Are the events already setup?
+*/ 
+_eventsDone = false,
 
 
 /**
@@ -79,17 +82,17 @@ _guideContainer;
 * @constructor
 * 
 */
-var IsExplorer = function() {
+isExplorer = function() {
   return (navigator.userAgent.indexOf('MSIE') !== -1);
-};
+},
 
 
 
 /**
-* Builds or returns an standard container (once) for all the grids and guides.
+* Builds or returns an standard container (once) for all the grids
 * 
 */
-var getGuideContainer = function () {
+getGuideContainer = function () {
   // are you there?
 
   if (!_guideContainer) {
@@ -112,16 +115,16 @@ var getGuideContainer = function () {
   }
 
   return _guideContainer;
-};
+}
 
 
 /**
 * Resize the guide container everytime that the window is resized.
 * 
 */
-var resizeGuideContainer = function () {
+resizeGuideContainer = function () {
   style(getGuideContainer(), { width: document.documentElement.clientWidth + "px" } )
-};
+},
 
 
 
@@ -131,7 +134,7 @@ var resizeGuideContainer = function () {
 * VerticalGuide.
 * 
 */
-var VerticalGuide = function (options) {
+VerticalGuide = function (options) {
   var guide;
   
   // we can override the default options
@@ -154,28 +157,28 @@ var VerticalGuide = function (options) {
   });
 
   return guide;
-};
+},
 
 
 /**
 * Adding a vertical guide to the page.
 * 
 */
-var addVerticalGuide = function(options) {
+addVerticalGuide = function(options) {
 
   var guide = new VerticalGuide(options);
   guide.style.left = String(options.left).indexOf("%") !== -1 ? options.left : options.left + "px";
   document.body.appendChild(guide);
   
   return guide;
-};
+},
 
 
 /**
 * HorizontalGuide.
 * 
 */
-var HorizontalGuide = function (options) {
+HorizontalGuide = function (options) {
   var guide;
   
   // we can override the default options
@@ -199,20 +202,20 @@ var HorizontalGuide = function (options) {
   // guide.className =         ReticulatorId + " hguide" + ReticulatorId;
 
   return guide;
-};
+},
 
 /**
 * Adding a horizontal guide to the page.
 * 
 */
-var addHorizontalGuide = function(options) {
+addHorizontalGuide = function(options) {
 
   var guide = new HorizontalGuide(options);
   guide.style.top = String(options.top).indexOf("%") !== -1 ? options.top : options.top + "px";
   document.body.appendChild(guide);
   
   return guide;
-};
+},
 
 
 
@@ -221,7 +224,7 @@ var addHorizontalGuide = function(options) {
 * @constructor
 * 
 */
-var Reticulator = function (options) {
+Reticulator = function (options) {
   this.options = merge({
     width: 951,
     columns: 16, // => 0 if you want to create an empty base
@@ -230,24 +233,16 @@ var Reticulator = function (options) {
     align: "center",
     color: "#00FF00",
     opacity: 0.5,
-    zindex: 9000000
+    zindex: 9000000,
+    visible: true
   }, options || {});
 
   // here we go!
   this.buildGrid();
   
   _reticulators.push(this);
+  setupEvents();
   
-  // onresize behavior
-  window.onresize = function(){
-    var i = 0;
-    resizeGuideContainer();
-    each(reticulators, 'alignGridLayout');
-    // while (element = _reticulators[i++]) {
-    //   element.alignGridLayout();
-    // }
-  };
-    
 };
 
 merge(Reticulator, {
@@ -304,7 +299,8 @@ merge(Reticulator.prototype, {
       padding:    '0 0 0 0',
       textAlign:  'left',
       zIndex:     this.options.zindex,
-      top:        '0'
+      top:        '0',
+      display: this.options.visible ? 'block' : 'none'
     });
     // send this to the container
     document.body.appendChild(gridLayout);        
@@ -376,7 +372,7 @@ merge(Reticulator.prototype, {
   * Hub function that calls all the grid things :)
   * 
   */
-  buildGrid : function () {
+  buildGrid : function() {
     var i, cumulative, guide;
 
     // basegrid basic settings all together in this map
@@ -423,25 +419,39 @@ merge(Reticulator.prototype, {
 var reticulatorKey = {
   key: null
 };
-document.onkeydown = function(e){
-  var key, keycode, guides, i, a;
-  if (!e) {
-    var e = window.event;
-  }
-  keycode = (IsExplorer() ? e.keyCode : e.which);
-  key = String.fromCharCode(e.keyCode);
-  if(reticulatorKey.key === null) {
-    reticulatorKey.key = key;
-  } else {
-    if(reticulatorKey.key === "G" && key === "R") {
-      Reticulator.toggleAll();
-    }
-  }
-};
 
-document.onkeyup = function(e){
-  reticulatorKey.key = null;
-};
+function setupEvents() {
+  if (_eventsDone) return;
+  _eventsDone = true;
+  // onresize behavior
+  window.onresize = function(){
+    var i = 0;
+    resizeGuideContainer();
+    each(_reticulators, 'alignGridLayout');
+  };
+  
+
+  document.onkeydown = function(e){
+    var key, keycode;
+    if (!e) {
+      var e = window.event;
+    }
+    keycode = (isExplorer() ? e.keyCode : e.which);
+    key = String.fromCharCode(e.keyCode);
+    if(reticulatorKey.key === null) {
+      reticulatorKey.key = key;
+    } else {
+      if(reticulatorKey.key === "G" && key === "R") {
+        Reticulator.toggleAll();
+      }
+    }
+  };
+
+  document.onkeyup = function(e){
+    reticulatorKey.key = null;
+  };
+
+}
 
 return Reticulator;
 
