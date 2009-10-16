@@ -12,7 +12,7 @@
     window.onload = function () {
       
       var grid = new Reticulator();
-      var grid2 = new Reticulator({
+      var grid2 = Reticulator({
         columns: 8,
         gutter: 9,
         color: "#FF0066",
@@ -48,12 +48,12 @@
 
 <h2>Use 2 grids at the same time</h2>
 
-<p>You only need to include the reticulator.js file and make a call like this</p>
+<p>You only need to include the reticulator.js file and make a call like this. Usage of the <code>new</code> keyword is optional.</p>
 
 <pre>
   <code>
     var grid = new Reticulator();
-    var grid2 = new Reticulator({
+    var grid2 = Reticulator({
       columns: 8,
       gutter: 9,
       color: "#FF0066",

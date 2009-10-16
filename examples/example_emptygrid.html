@@ -18,8 +18,7 @@
       grid.addHorizontalGuide(70);
       grid.addHorizontalGuide(127);
       
-      grid.addVerticalGuide(710);
-      grid.addVerticalGuide(719);
+      grid.addVerticalGuide(710).addVerticalGuide(719);
       
     };
   </script>
@@ -62,8 +61,8 @@
     grid.addHorizontalGuide(70);
     grid.addHorizontalGuide(127);
     
-    grid.addVerticalGuide(710);
-    grid.addVerticalGuide(719);
+    // you can also chain method calls
+    grid.addVerticalGuide(710).addVerticalGuide(719);
   </code>
 </pre>
 

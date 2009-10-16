@@ -30,6 +30,7 @@ To get the default grid (951/16/9) just write:
  
     var grid = new Reticulator();
 
+Usage of the `new` keyword to instantiate the object is optional.
 
 Customize your grid using the following options:
 
@@ -118,7 +119,7 @@ Add extra guides to your grid:
 
 You can forget the basegrid and add individual guides. For vertical guides:
 
-    addVerticalGuide({
+    Reticulator.addVerticalGuide({
       color: "#00FF00",
       opacity: 0.5,
       left: 100
@@ -158,7 +159,7 @@ You can forget the basegrid and add individual guides. For vertical guides:
 
 For horizontal guides:
 
-    addHorizontalGuide({
+    Reticulator.addHorizontalGuide({
       color: "#00FF00",
       opacity: 0.5,
       top: 100
@@ -195,6 +196,15 @@ For horizontal guides:
     </tr>
   </tbody>
 </table>
+
+To show/hide/toggle your grids, you can uses some imaginatively named methods:
+    
+    Reticulator.hideAll();
+    Reticulator.showAll();
+    Reticulator.toggleAll();
+
+The instance methods `hide`, `show` and `toggle` can be used to manipulate the visibility of individual grids. This will allow programmers coming from the future to develop its own UI for Reticulator.
+
 
 Anyway you can use the bookmarklet :)
 
