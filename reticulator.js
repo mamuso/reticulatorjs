@@ -71,12 +71,13 @@ _reticulators = [],
 * Unique guide container
 */  
 _guideContainer,
-/**
-* Are the events already setup?
-*/ 
-_eventsDone = false,
 
 _reticulatorKey = null,
+
+/**
+ * Independent guides
+ */  
+_guides = [],
 
 
 /**
@@ -89,8 +90,6 @@ isExplorer = function() {
 },
 
 setupEvents = function() {
-  if (_eventsDone) return;
-  _eventsDone = true;
   // onresize behavior
   window.onresize = function(){
     var i = 0;
@@ -101,9 +100,7 @@ setupEvents = function() {
 
   document.onkeydown = function(e){
     var key, keycode;
-    if (!e) {
-      var e = window.event;
-    }
+    e = e || window.event;
     keycode = (isExplorer() ? e.keyCode : e.which);
     key = String.fromCharCode(e.keyCode);
     if(_reticulatorKey === null) {
@@ -116,10 +113,11 @@ setupEvents = function() {
   };
 
   document.onkeyup = function(e){
-    reticulatorKey.key = null;
+    _reticulatorKey = null;
   };
 
 },
+
 
 /**
 * Builds or returns an standard container (once) for all the grids
@@ -199,7 +197,7 @@ addVerticalGuide = function(options) {
   var guide = new VerticalGuide(options);
   guide.style.left = String(options.left).indexOf("%") !== -1 ? options.left : options.left + "px";
   document.body.appendChild(guide);
-  
+  _guides.push(guide);
   return guide;
 },
 
@@ -229,8 +227,6 @@ HorizontalGuide = function (options) {
     opacity :     this.options.opacity,
     filter :      "alpha(opacity=" + this.options.opacity * 100 + ")"
   });
-  // guide.className =         ReticulatorId + " hguide" + ReticulatorId;
-
   return guide;
 },
 
@@ -243,7 +239,7 @@ addHorizontalGuide = function(options) {
   var guide = new HorizontalGuide(options);
   guide.style.top = String(options.top).indexOf("%") !== -1 ? options.top : options.top + "px";
   document.body.appendChild(guide);
-  
+  _guides.push(guide);
   return guide;
 },
 
@@ -272,8 +268,6 @@ Reticulator = function (options) {
   this.buildGrid();
   
   _reticulators.push(this);
-  setupEvents();
-  
 };
 
 merge(Reticulator, {
@@ -288,13 +282,19 @@ merge(Reticulator, {
    */  
   toggleAll : function() {
     each(_reticulators, 'toggle');
+    // toggle the independent guides too
+    each(_guides, function(index, el) {
+      style(el, { display: el.style.display == 'none' ? '' : 'none' });      
+    });
   },
   /**
    * Show all guides
    */
   showAll : function() {
     each(_reticulators, 'show');
-  }
+  },
+  addVerticalGuide: addVerticalGuide,
+  addHorizontalGuide: addHorizontalGuide
 });
 
 
@@ -306,9 +306,8 @@ merge(Reticulator.prototype, {
     style(this.basegrid.layout, { display: 'block' });
   },
   toggle : function() {
-    var e = this.basegrid.layout,
-    current = e.style.display;
-    style(e, { display: current == 'none' ? '' : 'none' });
+    var el = this.basegrid.layout;
+    style(el, { display: el.style.display == 'none' ? '' : 'none' });
   },
   /**
   * Method to build grid layout div.
@@ -442,12 +441,10 @@ merge(Reticulator.prototype, {
 });
 
 
+// setup event handlers
+setupEvents();
 
-/**
-* hide/show by g + r key combination
-* 
-*/
-
+// return the main object
 return Reticulator;
 
 }();
