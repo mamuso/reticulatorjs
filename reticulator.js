@@ -160,12 +160,36 @@ resizeGuideContainer = function () {
   style(getGuideContainer(), { width: document.documentElement.clientWidth + "px" });
 },
 
+/**
+* Reticulator is an abstract base that contains the basics of the grid.
+* @constructor
+* 
+*/
+Reticulator = function (options) {
+  if(!(this instanceof Reticulator)) return new Reticulator(options);
+  this.options = merge({
+    width: 951,
+    columns: 16, // => 0 if you want to create an empty base
+    gutter: 9,
+    offset: 0,
+    align: "center",
+    color: "#00FF00",
+    opacity: 0.5,
+    zindex: 9000000,
+    visible: true
+  }, options || {});
+
+  // here we go!
+  this.buildGrid();
+  
+  _reticulators.push(this);
+},
 
 /**
 * VerticalGuide.
 * 
 */
-VerticalGuide = function (options) {
+VerticalGuide = Reticulator.VerticalGuide = function (options) {
   var guide;
   
   // we can override the default options
@@ -192,24 +216,10 @@ VerticalGuide = function (options) {
 
 
 /**
-* Adding a vertical guide to the page.
-* 
-*/
-addVerticalGuide = function(options) {
-
-  var guide = new VerticalGuide(options);
-  guide.style.left = String(options.left).indexOf("%") !== -1 ? options.left : options.left + "px";
-  document.body.appendChild(guide);
-  _guides.push(guide);
-  return guide;
-},
-
-
-/**
 * HorizontalGuide.
 * 
 */
-HorizontalGuide = function (options) {
+HorizontalGuide = Reticulator.HorizontalGuide = function (options) {
   var guide;
   
   // we can override the default options
@@ -231,47 +241,8 @@ HorizontalGuide = function (options) {
     filter :      "alpha(opacity=" + this.options.opacity * 100 + ")"
   });
   return guide;
-},
-
-/**
-* Adding a horizontal guide to the page.
-* 
-*/
-addHorizontalGuide = function(options) {
-
-  var guide = new HorizontalGuide(options);
-  guide.style.top = String(options.top).indexOf("%") !== -1 ? options.top : options.top + "px";
-  document.body.appendChild(guide);
-  _guides.push(guide);
-  return guide;
-},
-
-
-
-/**
-* Reticulator is an abstract base that contains the basics of the grid.
-* @constructor
-* 
-*/
-Reticulator = function (options) {
-  if(!(this instanceof Reticulator)) return new Reticulator(options);
-  this.options = merge({
-    width: 951,
-    columns: 16, // => 0 if you want to create an empty base
-    gutter: 9,
-    offset: 0,
-    align: "center",
-    color: "#00FF00",
-    opacity: 0.5,
-    zindex: 9000000,
-    visible: true
-  }, options || {});
-
-  // here we go!
-  this.buildGrid();
-  
-  _reticulators.push(this);
 };
+
 
 merge(Reticulator, {
   /**
@@ -295,9 +266,7 @@ merge(Reticulator, {
    */
   showAll : function() {
     each(_reticulators, 'show');
-  },
-  addVerticalGuide: addVerticalGuide,
-  addHorizontalGuide: addHorizontalGuide
+  }
 });
 
 
@@ -364,41 +333,7 @@ merge(Reticulator.prototype, {
         break;
     };
   },
-  
-  /**
-  * Adds an extra vertical guide to the basegrid
-  * 
-  */
-  addVerticalGuide : function (left) {
-    var guide = new VerticalGuide({
-      color: this.options.color,
-      opacity: this.options.opacity
-    });
 
-    guide.style.left = String(left).indexOf("%") !== -1 ? left : left + "px";
-
-    this.basegrid.layout.appendChild(guide);
-
-    return this;
-  },
-  
-  /**
-  * Adds an extra vertical guide to the basegrid
-  * 
-  */
-  addHorizontalGuide : function (top) {
-    var guide = new HorizontalGuide({
-      color: this.options.color,
-      opacity: this.options.opacity
-    });
-
-    guide.style.width = "100%"; // adjust the width to the grid
-    guide.style.top = String(top).indexOf("%") !== -1 ? top : top + "px";
-
-    this.basegrid.layout.appendChild(guide);
-
-    return this;
-  },
   
   /**
   * Hub function that calls all the grid things :)
@@ -422,15 +357,7 @@ merge(Reticulator.prototype, {
       // put your guide here 
       for (i = 0; i < this.basegrid.guides; i++) {
         // vertical guides here
-        guide = new VerticalGuide({
-          color: this.options.color,
-          opacity: this.options.opacity
-        });
-
-        guide.style.left = cumulative + "px";
-
-        this.basegrid.layout.appendChild(guide);
-
+        this.addVerticalGuide(cumulative);
         if(i%2 === 0) {
           cumulative = cumulative + this.basegrid.cols;
         } else {
@@ -440,6 +367,49 @@ merge(Reticulator.prototype, {
     }
   }
   
+});
+
+each([
+    ['Horizontal', 'top', { width: '100%' }],
+    ['Vertical', 'left']
+  ], function(i, it) {
+  var name = it[0] ,
+  prop = it[1],
+  styles = it[2] || {},
+  pp = Reticulator.prototype;
+
+  // generates the addHorizontalGuide, addHorizontalGuides,
+  // addVerticalGuide and addVerticalGuides methods in the Reticulator.prototype  
+  pp['add' + name + 'Guide' ] = pp['add' + name + 'Guides'] = function(n) {
+    var opts = this.options,
+    layout = this.basegrid.layout;
+    
+    each(arguments, function(index, value) {
+      var guide = new Reticulator[name + 'Guide']({
+        color: opts.color,
+        opacity: opts.opacity
+      });
+
+      // set additional styles if needed
+      style(guide, styles);
+      // set the guide property (top or left)
+      guide.style[prop] = String(value).indexOf("%") !== -1 ? value : value + "px";
+
+      layout.appendChild(guide);
+    });
+    return this;
+  };
+  
+  // generates the addHorizontalGuide and addVerticalGuide
+  // class methods
+  Reticulator['add' + name + 'Guide'] = function(opts) {
+    var guide = new Reticulator[name + 'Guide'](opts),
+    value = opts[prop];
+    guide.style[prop] = String(value).indexOf("%") !== -1 ? value : value + "px";
+    document.body.appendChild(guide);
+    _guides.push(guide);
+    return guide;
+  };
 });
 
 
