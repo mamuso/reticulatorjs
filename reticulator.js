@@ -1,7 +1,7 @@
 /**
 * reticulator.js
 * ---------------------------------
-* Version 0.01
+* Version 0.02
 * Written by Manuel Muñoz Solera (mamuso@mamuso.net)
 * @requires love
 *
@@ -12,7 +12,7 @@
 */
 
 /**
-* @description Plugin that overlays a defined grid to follow for front
+* @description Overlays a defined grid to follow for front
 * development purposes. Also allows you to create individual vertical and
 * horizontal guides.
 * 
@@ -128,7 +128,6 @@ setupEvents = function() {
 * 
 */
 getGuideContainer = function () {
-  // are you there?
 
   if (!_guideContainer) {
     _guideContainer = document.createElement("div");
@@ -353,7 +352,6 @@ merge(Reticulator.prototype, {
       case "center":
         middle = (document.documentElement.clientWidth > document.body.scrollWidth ? document.documentElement.clientWidth : document.body.scrollWidth)/2;
         pos = middle - ((this.options.width)/2) + this.options.offset;
-        // console.log(this.basegrid.layout)
         this.basegrid.layout.style.left = pos + "px";
         break;
       case "left":
