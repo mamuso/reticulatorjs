@@ -377,7 +377,7 @@ merge(Reticulator.prototype, {
 
     this.basegrid.layout.appendChild(guide);
 
-    return guide;
+    return this;
   },
   
   /**
@@ -395,7 +395,7 @@ merge(Reticulator.prototype, {
 
     this.basegrid.layout.appendChild(guide);
 
-    return guide;
+    return this;
   },
   
   /**
