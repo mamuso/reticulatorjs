@@ -46,7 +46,7 @@ each = function(col, m, args) {
   for ( ; i < col.length; i +=1) {
     it = col[i];
     if (typeof m == 'string') {
-      it[m].apply(it, args)
+      it[m].apply(it, args);
     }
     else {
       m.apply(it, [i, it]);
@@ -76,6 +76,8 @@ _guideContainer,
 */ 
 _eventsDone = false,
 
+_reticulatorKey = null,
+
 
 /**
 * Are you explorer?
@@ -86,7 +88,38 @@ isExplorer = function() {
   return (navigator.userAgent.indexOf('MSIE') !== -1);
 },
 
+setupEvents = function() {
+  if (_eventsDone) return;
+  _eventsDone = true;
+  // onresize behavior
+  window.onresize = function(){
+    var i = 0;
+    resizeGuideContainer();
+    each(_reticulators, 'alignGridLayout');
+  };
+  
 
+  document.onkeydown = function(e){
+    var key, keycode;
+    if (!e) {
+      var e = window.event;
+    }
+    keycode = (isExplorer() ? e.keyCode : e.which);
+    key = String.fromCharCode(e.keyCode);
+    if(_reticulatorKey === null) {
+      _reticulatorKey = key;
+    } else {
+      if(_reticulatorKey === "G" && key === "R") {
+        Reticulator.toggleAll();
+      }
+    }
+  };
+
+  document.onkeyup = function(e){
+    reticulatorKey.key = null;
+  };
+
+},
 
 /**
 * Builds or returns an standard container (once) for all the grids
@@ -115,7 +148,7 @@ getGuideContainer = function () {
   }
 
   return _guideContainer;
-}
+},
 
 
 /**
@@ -123,11 +156,8 @@ getGuideContainer = function () {
 * 
 */
 resizeGuideContainer = function () {
-  style(getGuideContainer(), { width: document.documentElement.clientWidth + "px" } )
+  style(getGuideContainer(), { width: document.documentElement.clientWidth + "px" });
 },
-
-
-
 
 
 /**
@@ -225,6 +255,7 @@ addHorizontalGuide = function(options) {
 * 
 */
 Reticulator = function (options) {
+  if(!(this instanceof Reticulator)) return new Reticulator(options);
   this.options = merge({
     width: 951,
     columns: 16, // => 0 if you want to create an empty base
@@ -256,13 +287,13 @@ merge(Reticulator, {
    * Toggles visibility of all guides
    */  
   toggleAll : function() {
-    each(_reticulators, 'toggle')
+    each(_reticulators, 'toggle');
   },
   /**
    * Show all guides
    */
   showAll : function() {
-    each(_reticulators, 'show')
+    each(_reticulators, 'show');
   }
 });
 
@@ -416,42 +447,6 @@ merge(Reticulator.prototype, {
 * hide/show by g + r key combination
 * 
 */
-var reticulatorKey = {
-  key: null
-};
-
-function setupEvents() {
-  if (_eventsDone) return;
-  _eventsDone = true;
-  // onresize behavior
-  window.onresize = function(){
-    var i = 0;
-    resizeGuideContainer();
-    each(_reticulators, 'alignGridLayout');
-  };
-  
-
-  document.onkeydown = function(e){
-    var key, keycode;
-    if (!e) {
-      var e = window.event;
-    }
-    keycode = (isExplorer() ? e.keyCode : e.which);
-    key = String.fromCharCode(e.keyCode);
-    if(reticulatorKey.key === null) {
-      reticulatorKey.key = key;
-    } else {
-      if(reticulatorKey.key === "G" && key === "R") {
-        Reticulator.toggleAll();
-      }
-    }
-  };
-
-  document.onkeyup = function(e){
-    reticulatorKey.key = null;
-  };
-
-}
 
 return Reticulator;
 
