@@ -79,29 +79,33 @@ _reticulatorKey = null,
  */  
 _guides = [],
 
-
-/**
-* Are you explorer?
-* @constructor
-* 
-*/
-isExplorer = function() {
-  return (navigator.userAgent.indexOf('MSIE') !== -1);
-},
+addEvent = function() {
+  if (window.addEventListener) {
+    return function(o, type, handler) {
+      o.addEventListener(type, handler, false);
+    };
+  }
+  else if (window.attachEvent) {
+    return function(o, type, handler) {
+      o.attachEvent('on' + type, handler);
+    };
+  }
+}(),
 
 setupEvents = function() {
   // onresize behavior
-  window.onresize = function(){
+  addEvent(window, 'resize', function(){
     var i = 0;
     resizeGuideContainer();
     each(_reticulators, 'alignGridLayout');
-  };
-  
+  });
 
-  document.onkeydown = function(e){
+
+  // toggle visibility when hitting "g+r"
+  addEvent(document, 'keydown', function(e){
     var key, keycode;
     e = e || window.event;
-    keycode = (isExplorer() ? e.keyCode : e.which);
+    keycode = (window.event ? e.keyCode : e.which);
     key = String.fromCharCode(e.keyCode);
     if(_reticulatorKey === null) {
       _reticulatorKey = key;
@@ -110,11 +114,11 @@ setupEvents = function() {
         Reticulator.toggleAll();
       }
     }
-  };
+  });
 
-  document.onkeyup = function(e){
+  addEvent(document, 'keyup', function(e){
     _reticulatorKey = null;
-  };
+  });
 
 },
 
