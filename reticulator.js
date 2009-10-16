@@ -95,7 +95,6 @@ addEvent = function() {
 setupEvents = function() {
   // onresize behavior
   addEvent(window, 'resize', function(){
-    var i = 0;
     resizeGuideContainer();
     each(_reticulators, 'alignGridLayout');
   });
